@@ -1,13 +1,12 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import { NavigationContainer } 
+         from '@react-navigation/native';
+import { createBottomTabNavigator } 
+         from '@react-navigation/bottom-tabs';
 
 import React from 'react';
 import type {PropsWithChildren} from 'react';
 import {
+  Button,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -24,38 +23,61 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import { multiply } from 'react-native-turbo-test';
+import { initSDK, loadSDK, StandardWall } from 'react-native-android-test';
 
 type SectionProps = PropsWithChildren<{
   title: string;
 }>;
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+const Tab = createBottomTabNavigator();
+
+function App(): React.JSX.Element {
+  initSDK("f719b0e5f20d5dee56f9f2a6893dd392126c26bf95c2d682")
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
+    <NavigationContainer>
+      <Tab.Navigator>
+        <Tab.Screen name="Home" component={Home} />
+        <Tab.Screen name="Feed" component={Feed} />
+      </Tab.Navigator>
+    </NavigationContainer>
+  );
+}
+
+function Feed() {
+  return (
+    <View style={styles1.container}>
+      <Button title = "LoadSDK" onPress = {loadSDK}/>
+      <StandardWall style={styles1.feedView} embedId={'678df8fe608d667484b2d8be'} uniqueId={'123'} isShowProfileEnabled={true}/>
     </View>
   );
 }
 
-function App(): React.JSX.Element {
+const styles1 = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  feedView:{
+    flex:1,
+    height: '100%',
+    width: '100%'
+  },
+  customView: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+    backgroundColor:'red'
+},
+carouselView:{
+  width: '100%',
+  height: 400
+  }
+});
+
+
+function Home() {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
@@ -93,6 +115,32 @@ function App(): React.JSX.Element {
         </View>
       </ScrollView>
     </SafeAreaView>
+  );
+}
+
+function Section({children, title}: SectionProps): React.JSX.Element {
+  const isDarkMode = useColorScheme() === 'dark';
+  return (
+    <View style={styles.sectionContainer}>
+      <Text
+        style={[
+          styles.sectionTitle,
+          {
+            color: isDarkMode ? Colors.white : Colors.black,
+          },
+        ]}>
+        {title}
+      </Text>
+      <Text
+        style={[
+          styles.sectionDescription,
+          {
+            color: isDarkMode ? Colors.light : Colors.dark,
+          },
+        ]}>
+        {children}
+      </Text>
+    </View>
   );
 }
 
